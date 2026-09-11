@@ -22,7 +22,7 @@ jobs:
             --exclude='data' \
             --exclude='work' \
             --exclude='outputs/*.zip' \
-            -czf yaoguang-forum-release.tar.gz .
+            -czf "$RUNNER_TEMP/yaoguang-forum-release.tar.gz" .
 
       - name: Prepare SSH key
         shell: bash
@@ -39,7 +39,7 @@ jobs:
           SERVER_PORT: ${{ secrets.SERVER_PORT }}
         run: |
           PORT="${SERVER_PORT:-22}"
-          scp -P "$PORT" -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new yaoguang-forum-release.tar.gz "$SERVER_USER@$SERVER_HOST:/home/coder/yaoguang-forum-release.tar.gz"
+          scp -P "$PORT" -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$RUNNER_TEMP/yaoguang-forum-release.tar.gz" "$SERVER_USER@$SERVER_HOST:/home/coder/yaoguang-forum-release.tar.gz"
           scp -P "$PORT" -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new deploy/remote-deploy-from-archive.sh "$SERVER_USER@$SERVER_HOST:/home/coder/remote-deploy-from-archive.sh"
 
       - name: Deploy on server
