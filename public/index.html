@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10172a" />
+    <title>新月百合会 · xyuri 同好论坛</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="/" data-link aria-label="返回首页">
+          <span class="brand-mark">xy</span>
+          <span><b>新月百合会</b><small>xyuri · yuri forum</small></span>
+        </a>
+        <nav class="topnav" aria-label="主导航">
+          <a href="/" data-link>首页</a>
+          <a href="/boards" data-link>版块</a>
+          <a href="/rules" data-link>规则</a>
+          <a href="/help" data-link>帮助</a>
+          <a href="/about" data-link>关于</a>
+          <a href="/account" data-link>我的账号</a>
+          <a href="/admin" data-link data-admin-link class="admin-link hidden">后台</a>
+        </nav>
+        <div class="account-actions" id="account-actions"></div>
+      </header>
+
+      <main id="app" tabindex="-1"></main>
+
+      <footer>
+        <img src="/assets/footer-yuri.svg" alt="新月百合会底部插画" />
+        <div><span>新月百合会 · 给 xyuri 和每一位同好留一盏月光</span><span>© 2026 Crescent Yuri</span></div>
+      </footer>
+    </div>
+
+    <div class="modal-backdrop hidden" id="modal-backdrop">
+      <div class="modal" role="dialog" aria-modal="true">
+        <button class="modal-close" data-action="close-modal" aria-label="关闭">×</button>
+        <div id="modal-content"></div>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script src="/app.js"></script>
+  </body>
+</html>

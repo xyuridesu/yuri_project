@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 220" role="img" aria-labelledby="title desc">
+  <title id="title">新月百合会底部插画</title>
+  <desc id="desc">新月、百合花、书页和论坛便签组成的原创横幅插画。</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#10172a"/>
+      <stop offset=".62" stop-color="#23324f"/>
+      <stop offset="1" stop-color="#5b7280"/>
+    </linearGradient>
+    <linearGradient id="paper" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff8e8"/>
+      <stop offset="1" stop-color="#f4e0b7"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="220" rx="18" fill="url(#sky)"/>
+  <circle cx="744" cy="68" r="46" fill="#d7b767"/>
+  <circle cx="763" cy="60" r="46" fill="#10172a"/>
+  <path d="M0 172 C120 140 200 196 330 162 C470 124 560 186 694 152 C790 128 860 142 960 110 L960 220 L0 220 Z" fill="#e9f0ee" opacity=".92"/>
+  <path d="M75 162 C130 116 230 120 294 166" fill="none" stroke="#5ba789" stroke-width="8" stroke-linecap="round"/>
+  <path d="M640 154 C700 120 774 124 834 166" fill="none" stroke="#5ba789" stroke-width="8" stroke-linecap="round"/>
+  <g transform="translate(100 116)">
+    <path d="M56 46 C35 26 35 1 58 0 C82 4 78 31 56 46Z" fill="#fffefb"/>
+    <path d="M58 46 C78 23 106 24 110 48 C108 74 78 69 58 46Z" fill="#fffefb"/>
+    <path d="M56 48 C35 68 9 60 13 36 C22 15 45 27 56 48Z" fill="#f7dbe3"/>
+    <path d="M58 48 L66 86" stroke="#5ba789" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="58" cy="47" r="5" fill="#d95c72"/>
+  </g>
+  <g transform="translate(682 112)">
+    <path d="M48 42 C28 20 35 1 56 0 C80 4 73 31 48 42Z" fill="#fffefb"/>
+    <path d="M50 43 C72 25 96 31 96 52 C91 75 67 67 50 43Z" fill="#fffefb"/>
+    <path d="M48 45 C26 62 6 52 14 32 C25 13 43 26 48 45Z" fill="#f7dbe3"/>
+    <path d="M50 45 L42 84" stroke="#5ba789" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="50" cy="44" r="5" fill="#d95c72"/>
+  </g>
+  <g transform="translate(380 118)">
+    <path d="M0 28 C52 6 94 11 140 33 L140 91 C92 69 52 66 0 88Z" fill="url(#paper)" stroke="#c9a660" stroke-width="3"/>
+    <path d="M140 33 C190 10 232 10 280 28 L280 88 C230 67 190 68 140 91Z" fill="#fff8e8" stroke="#c9a660" stroke-width="3"/>
+    <path d="M140 36 L140 91" stroke="#b28d4e" stroke-width="2"/>
+    <path d="M34 42 C67 32 92 34 118 44" stroke="#d95c72" stroke-width="4" stroke-linecap="round" opacity=".65"/>
+    <path d="M168 43 C204 31 230 34 253 43" stroke="#5ba789" stroke-width="4" stroke-linecap="round" opacity=".65"/>
+  </g>
+  <g fill="#fff8e8" opacity=".18">
+    <rect x="235" y="46" width="82" height="38" rx="6"/>
+    <rect x="590" y="38" width="96" height="42" rx="6"/>
+    <rect x="80" y="48" width="84" height="36" rx="6"/>
+  </g>
+</svg>

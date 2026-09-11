@@ -1,0 +1,10 @@
+{
+  "name": "yaoguang-forum",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A small, self-hosted community forum MVP.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  }
+}

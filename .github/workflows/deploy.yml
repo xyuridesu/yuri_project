@@ -1,0 +1,53 @@
+name: Deploy Forum
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build release archive
+        run: |
+          tar \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='data' \
+            --exclude='work' \
+            --exclude='outputs/*.zip' \
+            -czf yaoguang-forum-release.tar.gz .
+
+      - name: Prepare SSH key
+        shell: bash
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+      - name: Upload release
+        shell: bash
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
+        run: |
+          PORT="${SERVER_PORT:-22}"
+          scp -P "$PORT" -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new yaoguang-forum-release.tar.gz "$SERVER_USER@$SERVER_HOST:/home/coder/yaoguang-forum-release.tar.gz"
+          scp -P "$PORT" -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new deploy/remote-deploy-from-archive.sh "$SERVER_USER@$SERVER_HOST:/home/coder/remote-deploy-from-archive.sh"
+
+      - name: Deploy on server
+        shell: bash
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
+        run: |
+          PORT="${SERVER_PORT:-22}"
+          ssh -p "$PORT" -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$SERVER_USER@$SERVER_HOST" "bash /home/coder/remote-deploy-from-archive.sh"
