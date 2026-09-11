@@ -31,23 +31,40 @@ jobs:
           printf '%s\n' "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
 
-      - name: Upload release
+      - name: Normalize deploy secrets
         shell: bash
         env:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_PORT: ${{ secrets.SERVER_PORT }}
         run: |
-          PORT="${SERVER_PORT:-22}"
-          scp -P "$PORT" -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$RUNNER_TEMP/yaoguang-forum-release.tar.gz" "$SERVER_USER@$SERVER_HOST:/home/coder/yaoguang-forum-release.tar.gz"
-          scp -P "$PORT" -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new deploy/remote-deploy-from-archive.sh "$SERVER_USER@$SERVER_HOST:/home/coder/remote-deploy-from-archive.sh"
+          HOST="$(printf '%s' "$SERVER_HOST" | tr -d '\r\n ' | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}|[A-Za-z0-9.-]+\.[A-Za-z]{2,}' | head -n1 || true)"
+          USER="$(printf '%s' "$SERVER_USER" | tr -d '\r\n ')"
+          PORT="$(printf '%s' "${SERVER_PORT:-22}" | tr -cd '0-9')"
+          PORT="${PORT:-22}"
+
+          if [ -z "$HOST" ]; then
+            echo "SERVER_HOST is invalid. Use a plain value like 121.43.254.231"
+            exit 1
+          fi
+          if [ -z "$USER" ]; then
+            echo "SERVER_USER is invalid. Use coder"
+            exit 1
+          fi
+
+          {
+            echo "DEPLOY_HOST=$HOST"
+            echo "DEPLOY_USER=$USER"
+            echo "DEPLOY_PORT=$PORT"
+          } >> "$GITHUB_ENV"
+
+      - name: Upload release
+        shell: bash
+        run: |
+          scp -P "$DEPLOY_PORT" -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$RUNNER_TEMP/yaoguang-forum-release.tar.gz" "$DEPLOY_USER@$DEPLOY_HOST:/home/coder/yaoguang-forum-release.tar.gz"
+          scp -P "$DEPLOY_PORT" -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new deploy/remote-deploy-from-archive.sh "$DEPLOY_USER@$DEPLOY_HOST:/home/coder/remote-deploy-from-archive.sh"
 
       - name: Deploy on server
         shell: bash
-        env:
-          SERVER_HOST: ${{ secrets.SERVER_HOST }}
-          SERVER_USER: ${{ secrets.SERVER_USER }}
-          SERVER_PORT: ${{ secrets.SERVER_PORT }}
         run: |
-          PORT="${SERVER_PORT:-22}"
-          ssh -p "$PORT" -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$SERVER_USER@$SERVER_HOST" "bash /home/coder/remote-deploy-from-archive.sh"
+          ssh -p "$DEPLOY_PORT" -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new "$DEPLOY_USER@$DEPLOY_HOST" "bash /home/coder/remote-deploy-from-archive.sh"
