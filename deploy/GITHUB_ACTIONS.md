@@ -1,4 +1,4 @@
-# GitHub Actions 自动部署
+# 手动部署说明
 
 仓库地址：
 
@@ -6,38 +6,18 @@
 https://github.com/xyuridesu/yuri_project
 ```
 
-推送到 `main` 或 `master` 后，`.github/workflows/deploy.yml` 会自动打包代码并上传到服务器。
+当前已取消 GitHub Actions 自动部署。以后请在本地终端手动打包并上传。
 
-## 需要在 GitHub 仓库设置 Secrets
+## 手动部署
 
-进入仓库：
+在 Windows PowerShell 执行：
 
-`Settings` -> `Secrets and variables` -> `Actions` -> `New repository secret`
-
-添加：
-
-```text
-SERVER_HOST=121.43.254.231
-SERVER_USER=coder
-SERVER_PORT=22
-SERVER_SSH_KEY=<部署私钥内容>
+```powershell
+powershell -ExecutionPolicy Bypass -File ".\outputs\build-yaoguang-package.ps1"
+powershell -ExecutionPolicy Bypass -File ".\outputs\deploy-yaoguang-to-aliyun.ps1"
 ```
 
-不要把私钥发到聊天里。私钥只粘贴到 GitHub Secrets。
-
-## 服务器 sudo 权限
-
-GitHub Actions 不能手动输入 sudo 密码。需要在服务器上允许 `coder` 执行部署所需命令时免密 sudo。
-
-在服务器 root 终端执行：
-
-```bash
-cat >/etc/sudoers.d/yaoguang-deploy <<'EOF'
-coder ALL=(root) NOPASSWD: /usr/bin/apt, /usr/bin/tee, /usr/bin/cp, /usr/bin/mkdir, /usr/bin/rm, /usr/bin/ln, /usr/sbin/nginx, /usr/bin/systemctl, /usr/bin/chown
-EOF
-chmod 440 /etc/sudoers.d/yaoguang-deploy
-visudo -cf /etc/sudoers.d/yaoguang-deploy
-```
+部署脚本会通过 SSH 上传代码，并在服务器上保留用户数据。
 
 ## 数据保护
 
